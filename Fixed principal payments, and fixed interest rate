@@ -27,7 +27,7 @@ private:
 
    Loan::Loan(double upphaed, double vextir, int afborganir)
    {
-       principal == upphaed;
+       principal =upphaed;
        interestRate = vextir;
        numOfPayments = afborganir;
        sumOfInstalments = 0.0;
