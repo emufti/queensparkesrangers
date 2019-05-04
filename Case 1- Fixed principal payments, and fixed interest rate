@@ -1,102 +1,194 @@
 #include <iostream>
+
 #include <fstream>
+
 #include <string>
+
 #include <iomanip>
+
+#include <stdio.h>
+#include <math.h>
+#include <cstdlib>
+
+#include <cmath>
+
 
 using namespace std;
 
-class Loan
-{
+
+
+class Loan{
+
 public:
+
     Loan(double upphaed, double vextir, int afborganir);
+
     void displaySchedule();
 
+
+
 private:
+
     void pay(int i);
+
     double payments();
+
     double interest(int i);
+
     double Balance(int i);
 
+
+
     double sumOfInstalments;
+
     double sumOfInterest;
+
     double total;
+
     double principal{};
+
     double interestRate;
+
     int numOfPayments;
+
 };
 
-   Loan::Loan(double upphaed, double vextir, int afborganir)
-   {
-       principal =upphaed;
-       interestRate = vextir;
-       numOfPayments = afborganir;
-       sumOfInstalments = 0.0;
-       sumOfInterest = 0.0;
-       total = 0.0;
-   }
+
+
+Loan::Loan(double upphaed, double vextir, int afborganir)
+
+{
+
+    principal = upphaed;
+
+    interestRate = vextir;
+
+    numOfPayments = afborganir;
+
+    sumOfInstalments = 0.0;
+
+    sumOfInterest = 0.0;
+
+    total = 0.0;
+
+}
+
+
 
 void Loan::pay(int i)
+
 {
+
     sumOfInstalments += payments();
+
     sumOfInterest += interest(i);
+
     total += payments() + interest(i);
+
 }
+
+
 
 double Loan::payments()
+
 {
+
     return principal / numOfPayments;
+
 }
+
+
 
 double Loan::interest(int i)
+
 {
+
     return Balance(i) * (interestRate / 12) / 100;
+
 }
+
+
 
 double Loan::Balance(int i)
+
 {
+
     return principal - (i - 1) * payments();
+
 }
 
+
+
 void readData(double& principal, double& interestRate, int& numOfPayments)
+
 {
+
     cout << "Principal: ";
+
     cin >> principal;
+
     cout << "Interest rate: ";
+
     cin >> interestRate;
+
     cout << "Number of payments: ";
+
     cin >> numOfPayments;
+
 }
+
+
+
+
 
 
 
 void Loan::displaySchedule()
+
 {
-    cout << "No.        Balance     Instalment       Interest  Total payment" << endl;
+
+    cout << "Period        Opening Balance      Principal           Interest            Instalment                Closing Balance" << endl;
+
     cout << "----------------------------------------------------------------" << endl;
+
+
 
     for (int i = 1; i <= numOfPayments; i++)
+
     {
-        cout << i << "        " << Balance(i) << "     " << payments() << "     " << interest(i) << "     " << (payments() + interest(i));
+
+        cout << i << "        " <<  Balance(i) << "     " << principal << "     " << interest(i) << "     " << payments() << "     " << (payments() + interest(i));
+
         pay(i);
+
     }
+
     cout << "----------------------------------------------------------------" << endl;
+
     cout << sumOfInstalments << sumOfInterest << total;
 
+
+
 }
+
 int main()
+
 {
+
     double amount, interestRate;
+
     int numPayments;
 
+
+
     readData(amount, interestRate, numPayments);
+
     Loan myLoan(amount, interestRate, numPayments);
+
     myLoan.displaySchedule();
 
-      return 0;
+
+
+    return 0;
+
 }
-
-
-
-
-
-
