@@ -15,7 +15,7 @@ int main()
 	double PVi,freq,marg,monthi,yeari,std,mu;
 	int n;
 	cout<<"Input the Present Value = ;";cin>>PVi;cout<<endl;
-	cout<<"Input frequency (1=annually, 2=semi-anually,4=quarterly,12=monthly)";cin>>freq;cout<<endl;
+	cout<<"Input frequency (1=annually, 2=semi-annually,4=quarterly,12=monthly)";cin>>freq;cout<<endl;
 	cout<<"Input number of Periods";cin>>n;cout<<endl; 
 	cout<<"Input Margin ";cin>>marg;cout<<endl;
 	cout<<"Input mean of the floating rate = ";cin>>mu;cout<<endl;
