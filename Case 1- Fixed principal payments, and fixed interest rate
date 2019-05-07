@@ -2,13 +2,11 @@
 
 #include <fstream>
 
-#include <string>
+#include <ctime>
 
-#include <iomanip>
-
-#include <stdio.h>
-#include <math.h>
 #include <cstdlib>
+
+#include <string>
 
 #include <cmath>
 
@@ -49,6 +47,8 @@ private:
 
     double interestRate;
 
+    int freq;
+
     int numOfPayments;
 
 };
@@ -62,6 +62,8 @@ Loan::Loan(double upphaed, double vextir, int afborganir)
     principal = upphaed;
 
     interestRate = vextir;
+
+    freq= afborganir;
 
     numOfPayments = afborganir;
 
@@ -103,7 +105,7 @@ double Loan::interest(int i)
 
 {
 
-    return Balance(i) * (interestRate / 12) / 100;
+    return Balance(i) * (interestRate / freq) / 100;
 
 }
 
@@ -119,7 +121,7 @@ double Loan::Balance(int i)
 
 
 
-void readData(double& principal, double& interestRate, int& numOfPayments)
+void readData(double& principal, double& interestRate, int& freq, int& numOfPayments)
 
 {
 
@@ -130,6 +132,10 @@ void readData(double& principal, double& interestRate, int& numOfPayments)
     cout << "Interest rate: ";
 
     cin >> interestRate;
+
+    cout << "frequency (1= annually, 2= semi-annually, 4= quarterly, 12= monthly): ";
+
+    cin >> freq;
 
     cout << "Number of payments: ";
 
@@ -177,11 +183,11 @@ int main()
 
     double amount, interestRate;
 
-    int numPayments;
+    int freq, numPayments;
 
 
 
-    readData(amount, interestRate, numPayments);
+    readData(amount, interestRate, freq, numPayments);
 
     Loan myLoan(amount, interestRate, numPayments);
 
@@ -192,3 +198,4 @@ int main()
     return 0;
 
 }
+
