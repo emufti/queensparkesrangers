@@ -14,14 +14,14 @@ int main()
 	srand (( unsigned ) time (0)); 
 	double PVi,freq,marg,monthi,yeari,std,mu;
 	int n;
-	cout<<"Input the Present Value = ;";cin>>PVi;cout<<endl;
-	cout<<"Input frequency (1=annually, 2=semi-annually,4=quarterly,12=monthly)";cin>>freq;cout<<endl;
-	cout<<"Input number of Periods";cin>>n;cout<<endl; 
-	cout<<"Input Margin ";cin>>marg;cout<<endl;
-	cout<<"Input mean of the floating rate = ";cin>>mu;cout<<endl;
-	cout<<"Input Std of the floating rate";cin>>std;cout<<endl;
-	cout<<"Input your starting month";cin>>monthi;cout<<endl;
-	cout<<"Input your stating year";cin>>yeari;cout<<endl;
+	cout<<"Input the Present Value: ;";cin>>PVi;cout<<endl;
+	cout<<"Input frequency (1=annually, 2=semi-annually,4=quarterly,12=monthly): ";cin>>freq;cout<<endl;
+	cout<<"Input number of Periods: ";cin>>n;cout<<endl; 
+	cout<<"Input Margin:  ";cin>>marg;cout<<endl;
+	cout<<"Input mean of the floating rate: ";cin>>mu;cout<<endl;
+	cout<<"Input Std of the floating rate: ";cin>>std;cout<<endl;
+	cout<<"Input your starting month: ";cin>>monthi;cout<<endl;
+	cout<<"Input your stating year: ";cin>>yeari;cout<<endl;
 	
 	double PV[n+1],closingbal[n],install[n],floatingrate[n], interest[n], principal,periodic[n],per_year[n],per_month[n];
 	PV[1]=PVi;
