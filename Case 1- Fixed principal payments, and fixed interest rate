@@ -55,9 +55,10 @@ cin>>yeari;cout<<endl;
 }
 
 
- ofstream myfile3;
+  ofstream myfile3;
   myfile3.open ("yassaminisaserialkiller.csv");
   myfile3 << "Period#, Date, Opening Balance, Principal, Periodic Interest Rate, Interest, Instalment, Closing Balance \n";
+  
   for (int i=1; i<=n;i++)
   {
   
