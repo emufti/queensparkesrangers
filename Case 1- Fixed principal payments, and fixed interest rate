@@ -9,7 +9,7 @@ using namespace std;
 
 int main()
 {
-	srand (( unsigned ) time (0)); 
+    srand (( unsigned ) time (0)); 
     double PVi,rate,freq,monthi,yeari;
     int n;
     
@@ -38,8 +38,8 @@ cin>>yeari;cout<<endl;
   {
   
   
-  periodic=(rate/freq)/100;
-  interest[i]=periodic*PV[i];
+  periodic=rate/freq;
+  interest[i]=(periodic/100)*PV[i];
   install[i]=interest[i]+principal;
   closingbal[i]=PV[i]-principal;
 	PV[i+1]=closingbal[i];
@@ -61,7 +61,7 @@ cin>>yeari;cout<<endl;
   for (int i=1; i<=n;i++)
   {
   
-  	myfile3<<i<<","<<per_month[i]<<"/"<<per_year[i]<<","<<PV[i]<<","<<principal<<","<<periodic<<","<<interest[i]<<","<<install[i]<<","<<closingbal[i]<<endl;
+  	myfile3<<i<<","<<per_month[i]<<"/"<<per_year[i]<<","<<PV[i]<<","<<principal<<","<<periodic<<"%"<<","<<interest[i]<<","<<install[i]<<","<<closingbal[i]<<endl;
   	
   }
   myfile3.close();
