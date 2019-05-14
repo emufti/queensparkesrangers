@@ -1,1 +1,53 @@
+// Example program
+
+#include <iostream>
+#include <fstream>
+#include <ctime>
+#include <cstdlib>
+#include <string>
+#include <cmath>
+
+int main()
+{
+    double  payments(), interest(int i) , Balance(int i), sumOfInstalments, sumOfInterest, total , principal{}, interestRate;
+
+    int payments();
+
+    cout << "Enter the loan amount (Balance(int i)) --> ";
+    cin >> Balance(int i);
+
+    cout << "Enter the Monthly interest rate as a percentage --> ";
+    cin >> interestRate;
+
+    cout << "Enter number of monthly payments --> ";
+    cin >> payments();
+    
+    cout<<"Input number of Periods: ";
+    cin>>n;cout<<endl;
+
+    cout<<"Input your starting month: ";
+    cin>>monthi;cout<<end1;
+
+
+    Installment = (Balance(int i)/n - r)
+                                                             
+                           while (Balance(int i) > 0)
+	{
+		if (Balance(int i) < Installment		
+		{
+		   Balance(int i) = Balance(int i) - Balance(int i);
+			 
+		}	
+		else 
+		{
+		    Balance(int i) = Balance(int i) * (1 + interestRate) - Installment;
+				}
+
+		myfile3.open ("filename.csv");
+ 
+  myfile3 << "Period#, Date, Opening Balance, Principal, Fixed intereest rate, Instalment, Closing Balance \n";                  
+		termOfLoan = month;
+   
+    return 0;
+}
 
