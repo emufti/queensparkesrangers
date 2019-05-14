@@ -114,7 +114,7 @@ int main()
 
 ofstream myfile3;
 
-myfile3.open ("QueenRichard.csv");
+myfile3.open ("richardisourqueen.csv");
 
   myfile3 << "Period#, Date, Opening Balance, Principal, Floating Rate, Periodic Interest Rate, Interest, Instalment, Closing Balance \n";
 
@@ -124,7 +124,7 @@ myfile3.open ("QueenRichard.csv");
 
   
 
-  	myfile3<<i<<","<<per_month[i]<<"/"<<per_year[i]<<","<<PV[i]<<","<<principal<<","<<floatingrate[i]<<","<<periodic[i]<<","<<interest[i]<<","<<install[i]<<","<<closingbal[i]<<endl;
+  	myfile3<<i<<","<<per_month[i]<<"/"<<per_year[i]<<","<<PV[i]<<","<<principal<<","<<floatingrate[i]<<","<<periodic[i]<<"%"<<","<<interest[i]<<","<<install[i]<<","<<closingbal[i]<<endl;
 
   	
 
