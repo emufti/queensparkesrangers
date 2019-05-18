@@ -1,53 +1,181 @@
-// Example program
 
 #include <iostream>
-#include <fstream>
-#include <ctime>
-#include <cstdlib>
-#include <string>
-#include <cmath>
+
+#include "math.h"
+
+
+using namespace std;
+
+class Functions
+
+{
+
+    public:
+    
+    double FixedRateFixedInstUnknownPMT(double r, double PV, int n)
+
+    {
+
+        double PMT = 0;
+
+
+        if (n < 1)
+
+        {
+
+            cout<<"The number of periods must be >= 1 !!";
+
+            return -1;
+
+        }
+
+        if (PV <= 0)
+
+        {
+
+            cout<<"The opening balance must be > 0 !!";
+
+            return -1;
+
+        }
+
+        if (r <= -1)
+
+        {
+
+            cout<<"The interest rate must be > -1 !!";
+
+            return -1;
+
+        }
+
+        
+
+        
+
+        if (n==1)
+
+        {
+            PMT = PV*(1+r); 
+            return PMT;
+
+        }
+
+        else
+
+        {
+
+            double denom = 0;
+
+            double nom = 0;
+
+            double r1 = r + 1;
+
+            double rexponent = 1;
+
+            
+
+            for (int i = 1; i < n; i++)
+
+            {
+
+                denom += (n - i) * rexponent;
+
+                nom += rexponent;
+
+                rexponent *= r1;
+
+            }
+
+            nom += rexponent;
+
+            
+
+            denom = n + (r * nom);
+
+            nom = 1 + (r * denom);
+
+            
+
+            if (denom > 0)
+
+            {
+                PMT = PV*(nom/denom);  
+
+                return PMT;
+
+            }
+
+            else
+
+            {
+
+                cout<<"Bad Calculation !!";
+
+                return -1;
+
+            }
+
+
+        }
+
+    }
+
+};
+
+
+
+
 
 int main()
+
 {
-    double  payments(), interest(int i) , Balance(int i), sumOfInstalments, sumOfInterest, total , principal{}, interestRate;
 
-    int payments();
-
-    cout << "Enter the loan amount (Balance(int i)) --> ";
-    cin >> Balance(int i);
-
-    cout << "Enter the Monthly interest rate as a percentage --> ";
-    cin >> interestRate;
-
-    cout << "Enter number of monthly payments --> ";
-    cin >> payments();
-    
-    cout<<"Input number of Periods: ";
-    cin>>n;cout<<endl;
-
-    cout<<"Input your starting month: ";
-    cin>>monthi;cout<<end1;
+    Functions calculator;
 
 
-    Installment = (Balance(int i)/n - r)
-                                                             
-                           while (Balance(int i) > 0)
-	{
-		if (Balance(int i) < Installment		
-		{
-		   Balance(int i) = Balance(int i) - Balance(int i);
-			 
-		}	
-		else 
-		{
-		    Balance(int i) = Balance(int i) * (1 + interestRate) - Installment;
-				}
 
-		myfile3.open ("filename.csv");
- 
-  myfile3 << "Period#, Date, Opening Balance, Principal, Fixed intereest rate, Instalment, Closing Balance \n";                  
-		termOfLoan = month;
-   
-    return 0;
-}
+        cout<<"Please enter a rate: ";
+
+        double r;// = 0.05;
+
+        cin >> r;
+
+        cout<<"Please enter an opening balance: ";
+
+        double PV;// = 250,000.00;
+
+        cin >> PV;
+
+        cout<<"Please enter a number of periods: ";
+
+        int n;// = 5;
+
+        cin >> n;
+
+        
+
+        double PMT = calculator.FixedRateFixedInstUnknownPMT(r, PV, n);
+
+        
+
+        if (PMT != -1)
+
+        {
+
+            cout<<"The installment:\n";
+
+            cout<<to_string(PMT);
+
+        }
+
+        else
+
+        {
+
+            cout<<"Please retry";
+
+        }
+
+    }
 
