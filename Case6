@@ -1,0 +1,157 @@
+#include <iostream>
+#include "math.h"
+
+using namespace std;
+
+class Functions
+{
+    public:
+    
+    double PMTProportion(double r, int n)
+    {
+        return r * (1 + 1/(std::pow(1+r, n) - 1));
+    }
+    
+    double PMTProportionDerived(double r, int n)
+    {
+        double r1_n1 = std::pow(1+r, n - 1);
+        double r1_n = r1_n1 * r;
+        double r1_2n = r1_n * r1_n;
+        
+        return 1 + (r1_n - n * r * r1_n1 - 1)/(r1_2n - 1);
+    }
+    
+    double ErrorFunction(double PMT, double PV, double r, double n)
+    {
+        double difference = PMT - PMTProportion(r, n) * PV;
+        return difference * difference;
+    }
+    
+    double ErrorFunctionDerived(double PMT, double PV, double r, double n)
+    {
+        double f = PMTProportion(r, n);
+        double fprim = PMTProportionDerived(r, n);
+        
+        return -2 * PV * fprim * (PMT - f * PV);
+    }
+    
+    double Gamma(double currentR, double previousR, double currentDeltaError, double previousDeltaError)
+    {
+        double deltaDiff = std::abs(currentDeltaError - previousDeltaError);
+        if (deltaDiff <= 0)
+        {
+            cout<<"Reached Convergence";
+            return 0;
+        }
+        else
+        {
+            return std::abs(currentR - previousR) * deltaDiff / (deltaDiff * deltaDiff);
+        }
+    }
+    
+    double FixedRateFixedInstUnknownRate(double PV, double PMT, int n, double errorPercentage, double r0, double gamma0, int maxIterations)
+    {
+        int iterationsCount = 1;
+        
+        double previousR = r0;
+        double currentR = previousR;
+        double previousDeltaError = ErrorFunctionDerived(PMT, PV, currentR, n);
+        double currentDeltaError = previousDeltaError;
+        
+        double error = ErrorFunction(PMT, PV, currentR, n);
+        
+        while (error > errorPercentage / 100.0 && iterationsCount < maxIterations)
+        {
+            cout<<"Iteration " << to_string(iterationsCount) << " - Error: " << to_string(error) << "\n";
+            
+            double gamma = gamma0;
+            
+            if (iterationsCount > 1)
+            {
+                gamma = Gamma(currentR, previousR, currentDeltaError, previousDeltaError);
+            }
+            
+            previousR = currentR;
+            previousDeltaError = currentDeltaError;
+            currentR = previousR - gamma * previousDeltaError;
+            currentDeltaError = ErrorFunctionDerived(PMT, PV, currentR, n);
+            
+            error = ErrorFunction(PMT, PV, currentR, n);
+            iterationsCount++;
+        }
+        
+        return currentR;
+    }
+    
+    double InitialRate(double PV, double PMT, int n)
+    {
+        if (n > 1 && PV > 0)
+        {
+            return (n * PMT - PV)/((n - 1) * PV);
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    
+    bool CheckValues(double PV, double PMT, int n)
+    {
+        if (n < 1)
+        {
+            cout<<"The number of periods must be >= 1 !!";
+            return false;
+        }
+        
+        if (PV <= 0 || PMT <= 0)
+        {
+            cout<<"The instalment and the loan nominal must be > 0 !!";
+            return false;
+        }
+        
+        if (n * PMT < PV)
+        {
+            cout<<"The total money reinbursed sould be greater than the inital loan !!";
+            return false;
+        }
+        
+        return true;
+    }
+};
+
+
+int main()
+{
+    Functions calculator;
+    
+    cout<<"Please enter a loan nominal value: ";
+    double PV;// = 2309.75;
+    cin >> PV;
+    cout<<"Please enter an instalement value: ";
+    double PMT;// = 2309.75;
+    cin >> PMT;
+    cout<<"Please enter a number of periods: ";
+    int n;// = 5;
+    cin >> n;
+    
+    if (calculator.CheckValues(PV, PMT, n))
+    {
+        if (n == 1)
+        {
+            double r = (PMT / PV) - 1;
+            cout<<"The rate of the loan is:\n";
+            cout<<to_string(r);
+        }
+        else
+        {
+            double errorPercentage = 1;
+            double gamma0 = 0.001;
+            double r0 = calculator.InitialRate(PV, PMT, n);
+            int maxIterations = 100;
+            
+            double r = calculator.FixedRateFixedInstUnknownRate(PV, PMT, n, errorPercentage, r0, gamma0, maxIterations);
+            cout<<"The rate of the loan is:\n";
+            cout<<to_string(r);
+        }
+    }
+}
