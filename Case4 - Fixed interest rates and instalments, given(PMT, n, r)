@@ -56,21 +56,16 @@ cin>>yeari;cout<<endl;
 
 	
 
-	double PMT[n] , PV[n+1],  closingbal[n], interest[n], principal[n], periodic, per_year[n], per_month[n];
+     double PMT[n] , PV[n+1],  closingbal[n], interest[n], principal[n], periodic, per_year[n], per_month[n];
 
 PMT[1]= PMTi;	
 periodic= (r/freq);
 
-
 PV[1]= (PMTi)/((periodic/100)+ (periodic/100)/((pow((1+periodic/100),n)-1)));
-
-
-
 
 per_month[1]=monthi;
 
 per_year[1]=yeari;
-
 
 
 
@@ -107,8 +102,6 @@ per_year[1]=yeari;
 	}
 
 }
-
-
 
 
 
