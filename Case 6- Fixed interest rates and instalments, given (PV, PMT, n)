@@ -17,6 +17,11 @@
 using namespace std;
 
 
+class Functions
+
+{  public:
+
+
 double func(double r0, double PVi, double PMTi, int n)
 {
 return	n*log(1+r0)+ log(PMTi-PVi*r0)-log(PMTi);
@@ -26,24 +31,31 @@ return	n*log(1+r0)+ log(PMTi-PVi*r0)-log(PMTi);
 
 double  derivfunc(double r0, double PVi,double PMTi,int n)
 {
-return  (n/(1+r0))+ (-(PVi)/(PMTi-PVi*r0));
+return  (n/(1+r0))- ((PVi)/(PMTi-PVi*r0));
 }
 
 
 
-double newtonRaphson(double r0, double PVi, double PMT, int n)
+void newtonRaphson(double r0, double PVi, double PMTi, int n)
 {
-      double  h = func(double r0, double PVi, double PMT, int n) / derivFunc(double r0, double PVi, double PMT, int n);
+      double  h = func(r0, PVi, PMTi, n) / derivfunc(r0, PVi, PMTi, n);
  while (abs(h) >= epsilon)
  {
-     h = func(double r0, double PVi, double PMTi, int n)/derivFunc(double r0, double PVi, double PMTi, int n);
+     h = func(r0, PVi, PMTi, n)/derivfunc(r0, PVi, PMTi, n);
 
      r0 = r0- h;
  }
 	
 }
 
+};
 
+		double inval(double PVi, double n, double r)
+			{
+			return (PVi*r*(1+(1/(pow(1+r,n)-1))));
+			}
+			
+			
 int main()
 
 
@@ -58,7 +70,7 @@ int main()
 
 
 
-    double  PVi,PMTi,r1,freq,monthi,yeari;
+    double  PVi,PMTi,freq,monthi,yeari;
 
 
 
@@ -82,15 +94,39 @@ cin>>monthi;cout<<endl;
 cout<<"Input your starting year: ";
 cin>>yeari;cout<<endl;
 
-double r0=0.0001;
-r1= newtonRaphson(r0);
+//double r0=0.0001;
+
+ //r1= newtonRaphson(r0, PVi, PMTi, n);
 
 double  PV[n+1], closingbal[n], interest[n], principal[n], r, periodic, per_year[n], per_month[n];
 
+double rlow=0;
+double rhigh=1;
+double rmid;
+double errorr;
 
-r= (r1*freq)*100;
+do
+{
+  
+{	
+rmid=rlow+((rhigh-rlow)/2);
+if (inval(PVi,n,rmid)-PMTi>0)
+{
+	rhigh=rmid;			
+}
+	else if(inval(PVi,n,rmid)-PMTi<0)
+{
+        rlow=rmid;
+						
+}
+		
+	errorr=abs((inval(PVi,n,rmid)-PMTi)-0);
+		
+}
 
-periodic= (r1*100);
+}while (errorr>=0.001);
+r=rmid;
+
 
 
 PV[1]=PVi;
@@ -110,7 +146,7 @@ per_year[1]=yeari;
   {
 
 
-  interest[i]=(periodic/100)*PV[i];
+  interest[i]=r*PV[i];
 
   principal[i]= PMTi-interest[i];
 
@@ -145,11 +181,7 @@ per_year[1]=yeari;
 
 
 
-
-
 	}
-
-
 
 
 
@@ -163,7 +195,7 @@ per_year[1]=yeari;
   ofstream myfile3;
 
 
-  myfile3.open ("newtonraphson.csv");
+  myfile3.open ("newtonRaphson.csv");
 
 
 
@@ -182,7 +214,7 @@ per_year[1]=yeari;
 
 
 
-  myfile3<<i<<","<<per_month[i]<<"/"<<per_year[i]<<","<<PV[i]<<","<<principal[i]<<","<<periodic<<"%"<<","<<interest[i]<<","<<PMTi<<","<<closingbal[i]<<endl;
+  myfile3<<i<<","<<per_month[i]<<"/"<<per_year[i]<<","<<PV[i]<<","<<principal[i]<<","<<r*100<<"%"<<","<<interest[i]<<","<<PMTi<<","<<closingbal[i]<<endl;
 
 
 
@@ -206,6 +238,3 @@ per_year[1]=yeari;
 
 }
 
-
-
-}
