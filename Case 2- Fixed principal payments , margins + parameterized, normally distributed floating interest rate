@@ -64,7 +64,7 @@ int main()
 
 
 ofstream myfile3;
-myfile3.open ("case2.csv");
+myfile3.open ("iheartrichardCase2.csv");
   myfile3 << "Period#, Date, Opening Balance, Principal, Floating Rate, Periodic Interest Rate, Interest, Installment, Closing Balance \n";
   for (int i=1; i<=n;i++)
   {
