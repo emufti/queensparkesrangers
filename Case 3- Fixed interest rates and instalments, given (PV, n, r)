@@ -11,7 +11,6 @@ using namespace std;
 int main()
 
 
-
 {
 
 
@@ -47,9 +46,7 @@ cout<<"Input frequency (1=annually, 2=semi-anually,4=quarterly,12=monthly): ";
 cin>>freq;cout<<endl;
 
 
-
 cout<<"Input number of Periods: ";
-
 
 
 cin>>n;cout<<endl; 
@@ -71,21 +68,16 @@ cout<<"Input your starting year: ";
 cin>>yeari;cout<<endl;
 
 
-
 	
 double  PV[n+1],  closingbal[n], interest[n], principal[n], periodic, per_year[n], per_month[n];
 
 
 	
-
 periodic= (r/freq);
 
 
 
-
-
 PMTi= (PVi)*((periodic/100)+ (periodic/100)/((pow((1+periodic/100),n)-1)));
-
 
 
 
@@ -108,9 +100,6 @@ per_year[1]=yeari;
 
 
   {
-
-
-
   
 
   interest[i]=(periodic/100)*PV[i];
@@ -145,13 +134,9 @@ per_year[1]=yeari;
 	{
 
 
-
-		per_month[i+1]=per_month[i+1]-12;
-
-
+                per_month[i+1]=per_month[i+1]-12;
 
 		per_year[i+1]=per_year[i+1]+1;
-
 
 
 	}
@@ -165,14 +150,11 @@ per_year[1]=yeari;
   ofstream myfile3;
 
 
-
   myfile3.open ("my3.csv");
 
 
 
   myfile3 << "Period#, Date, Opening Balance, Principal, Periodic Interest Rate, Interest, Installment, Closing Balance \n";
-
-
 
 
   for (int i=1; i<=n;i++)
@@ -182,12 +164,9 @@ per_year[1]=yeari;
   {
 
 
-
   myfile3<<i<<","<<per_month[i]<<"/"<<per_year[i]<<","<<PV[i]<<","<<principal[i]<<","<<periodic<<"%"<<","<<interest[i]<<","<<PMTi<<","<<closingbal[i]<<endl;
 
 	
-
-
   }
 
 
