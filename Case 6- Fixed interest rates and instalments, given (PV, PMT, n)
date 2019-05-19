@@ -195,7 +195,7 @@ per_year[1]=yeari;
   ofstream myfile3;
 
 
-  myfile3.open ("newtonRaphson.csv");
+  myfile3.open ("iheartyassaminCase6.csv");
 
 
 
