@@ -1,37 +1,11 @@
 #include <iostream>
-
-
-
 #include <fstream>
-
-
-
 #include <ctime>
-
-
-
 #include <cstring>
-
-
-
 #include <cmath>
-
-
-
 #include <cstdlib>
 
-
-
-
-
-
-
 using namespace std;
-
-
-
-
-
 
 
 int main()
@@ -39,7 +13,6 @@ int main()
 
 
 {
-
 
 
     srand (( unsigned ) time (0)); 
@@ -53,12 +26,14 @@ int main()
 
 
 
-    
+   
 
 cout<<"Input the present value: ";
 
 
 cin>>PVi;cout<<endl;
+
+
 
 cout<<"Input the interest rate: ";
 
@@ -98,10 +73,7 @@ cin>>yeari;cout<<endl;
 
 
 	
-
-
-
-	double  PV[n+1],  closingbal[n], interest[n], principal[n], periodic, per_year[n], per_month[n];
+double  PV[n+1],  closingbal[n], interest[n], principal[n], periodic, per_year[n], per_month[n];
 
 
 	
@@ -121,20 +93,11 @@ PV[1]=PVi;
 
 
 
-
-
-
 per_month[1]=monthi;
 
 
 
 per_year[1]=yeari;
-
-
-
-
-
-
 
 
 
@@ -166,19 +129,12 @@ per_year[1]=yeari;
 
 
 
-	
-
-
-
 	per_year[i+1]=per_year[i];
 
 
 
 	per_month[i+1]=per_month[i]+(12/freq);
 
-
-
-	
 
 
 
@@ -206,14 +162,6 @@ per_year[1]=yeari;
 
 
 
-
-
-
-
-
-
-
-
   ofstream myfile3;
 
 
@@ -226,9 +174,6 @@ per_year[1]=yeari;
 
 
 
-  
-
-
 
   for (int i=1; i<=n;i++)
 
@@ -238,16 +183,9 @@ per_year[1]=yeari;
 
 
 
-  
+  myfile3<<i<<","<<per_month[i]<<"/"<<per_year[i]<<","<<PV[i]<<","<<principal[i]<<","<<periodic<<"%"<<","<<interest[i]<<","<<PMTi<<","<<closingbal[i]<<endl;
 
-
-
-  	myfile3<<i<<","<<per_month[i]<<"/"<<per_year[i]<<","<<PV[i]<<","<<principal[i]<<","<<periodic<<"%"<<","<<interest[i]<<","<<PMTi<<","<<closingbal[i]<<endl;
-
-
-
-  	
-
+	
 
 
   }
