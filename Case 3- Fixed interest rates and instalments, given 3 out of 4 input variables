@@ -1,127 +1,34 @@
-
 #include <iostream>
 
-#include "math.h"
+
+
+#include <fstream>
+
+
+
+#include <ctime>
+
+
+
+#include <cstring>
+
+
+
+#include <cmath>
+
+
+
+#include <cstdlib>
+
+
+
+
+
 
 
 using namespace std;
 
-class Functions
 
-{
-
-    public:
-    
-    double FixedRateFixedInstUnknownPMT(double r, double PV, int n)
-
-    {
-
-        double PMT = 0;
-
-
-        if (n < 1)
-
-        {
-
-            cout<<"The number of periods must be >= 1 !!";
-
-            return -1;
-
-        }
-
-        if (PV <= 0)
-
-        {
-
-            cout<<"The opening balance must be > 0 !!";
-
-            return -1;
-
-        }
-
-        if (r <= -1)
-
-        {
-
-            cout<<"The interest rate must be > -1 !!";
-
-            return -1;
-
-        }
-
-        
-
-        
-
-        if (n==1)
-
-        {
-            PMT = PV*(1+r); 
-            return PMT;
-
-        }
-
-        else
-
-        {
-
-            double denom = 0;
-
-            double nom = 0;
-
-            double r1 = r + 1;
-
-            double rexponent = 1;
-
-            
-
-            for (int i = 1; i < n; i++)
-
-            {
-
-                denom += (n - i) * rexponent;
-
-                nom += rexponent;
-
-                rexponent *= r1;
-
-            }
-
-            nom += rexponent;
-
-            
-
-            denom = n + (r * nom);
-
-            nom = 1 + (r * denom);
-
-            
-
-            if (denom > 0)
-
-            {
-                PMT = PV*(nom/denom);  
-
-                return PMT;
-
-            }
-
-            else
-
-            {
-
-                cout<<"Bad Calculation !!";
-
-                return -1;
-
-            }
-
-
-        }
-
-    }
-
-};
 
 
 
@@ -129,53 +36,228 @@ class Functions
 
 int main()
 
+
+
 {
 
-    Functions calculator;
+
+
+    srand (( unsigned ) time (0)); 
 
 
 
-        cout<<"Please enter a rate: ";
+    double  PVi,PMTi,r,freq,monthi,yeari;
 
-        double r;// = 0.05;
 
-        cin >> r;
+    int n;
 
-        cout<<"Please enter an opening balance: ";
 
-        double PV;// = 250,000.00;
 
-        cin >> PV;
+    
 
-        cout<<"Please enter a number of periods: ";
+cout<<"Input the present value: ";
 
-        int n;// = 5;
 
-        cin >> n;
+cin>>PVi;cout<<endl;
 
-        
+cout<<"Input the interest rate: ";
 
-        double PMT = calculator.FixedRateFixedInstUnknownPMT(r, PV, n);
 
-        
+cin>>r;cout<<endl;
 
-        if (PMT != -1)
 
-        {
+cout<<"Input frequency (1=annually, 2=semi-anually,4=quarterly,12=monthly): ";
 
-            cout<<"The installment:\n";
 
-            cout<<to_string(PMT);
+cin>>freq;cout<<endl;
 
-        }
 
-        else
 
-        {
+cout<<"Input number of Periods: ";
 
-            cout<<"Please retry";
 
-        }
 
-    }
+cin>>n;cout<<endl; 
 
+
+
+cout<<"Input your starting month: ";
+
+
+
+cin>>monthi;cout<<endl;
+
+
+
+cout<<"Input your starting year: ";
+
+
+
+cin>>yeari;cout<<endl;
+
+
+
+	
+
+
+
+	double  PV[n+1],  closingbal[n], interest[n], principal[n], periodic, per_year[n], per_month[n];
+
+
+	
+
+periodic= (r/freq);
+
+
+
+
+
+PMTi= (PVi)*((periodic/100)+ (periodic/100)/((pow((1+periodic/100),n)-1)));
+
+
+
+
+PV[1]=PVi;
+
+
+
+
+
+
+per_month[1]=monthi;
+
+
+
+per_year[1]=yeari;
+
+
+
+
+
+
+
+
+
+
+
+	for (int i=1;i<=n;i++)
+
+
+
+  {
+
+
+
+  
+
+  interest[i]=(periodic/100)*PV[i];
+
+
+
+  principal[i]= PMTi-interest[i];
+
+
+
+  closingbal[i]=PV[i]-principal[i];
+
+
+
+	PV[i+1]=closingbal[i];
+
+
+
+	
+
+
+
+	per_year[i+1]=per_year[i];
+
+
+
+	per_month[i+1]=per_month[i]+(12/freq);
+
+
+
+	
+
+
+
+	if (per_month[i+1]>12)
+
+
+
+	{
+
+
+
+		per_month[i+1]=per_month[i+1]-12;
+
+
+
+		per_year[i+1]=per_year[i+1]+1;
+
+
+
+	}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+  ofstream myfile3;
+
+
+
+  myfile3.open ("my3.csv");
+
+
+
+  myfile3 << "Period#, Date, Opening Balance, Principal, Periodic Interest Rate, Interest, Installment, Closing Balance \n";
+
+
+
+  
+
+
+
+  for (int i=1; i<=n;i++)
+
+
+
+  {
+
+
+
+  
+
+
+
+  	myfile3<<i<<","<<per_month[i]<<"/"<<per_year[i]<<","<<PV[i]<<","<<principal[i]<<","<<periodic<<"%"<<","<<interest[i]<<","<<PMTi<<","<<closingbal[i]<<endl;
+
+
+
+  	
+
+
+
+  }
+
+
+
+  myfile3.close();
+
+
+
+}
+
+    
