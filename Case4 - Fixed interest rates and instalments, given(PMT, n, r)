@@ -114,7 +114,7 @@ per_year[1]=yeari;
 
   ofstream myfile3;
 
-  myfile3.open ("case4.csv");
+  myfile3.open ("tearscase4.csv");
 
   myfile3 << "Period#, Date, Opening Balance, Principal, Periodic Interest Rate, Interest, Installment, Closing Balance \n";
 
@@ -135,6 +135,6 @@ per_year[1]=yeari;
   myfile3.close();
 
 }
-    
-    
+
+
 
