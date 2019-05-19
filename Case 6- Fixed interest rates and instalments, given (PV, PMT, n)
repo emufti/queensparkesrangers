@@ -1,157 +1,211 @@
 #include <iostream>
-#include "math.h"
+
+#include <fstream>
+
+#include <ctime>
+
+#include <cstring>
+
+#include <cmath>
+
+#include <cstdlib>
+
+#define epsilon 0.0001
+
+
 
 using namespace std;
 
-class Functions
+
+double func(double r0, double PVi, double PMTi, int n)
 {
-    public:
-    
-    double PMTProportion(double r, int n)
-    {
-        return r * (1 + 1/(std::pow(1+r, n) - 1));
-    }
-    
-    double PMTProportionDerived(double r, int n)
-    {
-        double r1_n1 = std::pow(1+r, n - 1);
-        double r1_n = r1_n1 * r;
-        double r1_2n = r1_n * r1_n;
-        
-        return 1 + (r1_n - n * r * r1_n1 - 1)/(r1_2n - 1);
-    }
-    
-    double ErrorFunction(double PMT, double PV, double r, double n)
-    {
-        double difference = PMT - PMTProportion(r, n) * PV;
-        return difference * difference;
-    }
-    
-    double ErrorFunctionDerived(double PMT, double PV, double r, double n)
-    {
-        double f = PMTProportion(r, n);
-        double fprim = PMTProportionDerived(r, n);
-        
-        return -2 * PV * fprim * (PMT - f * PV);
-    }
-    
-    double Gamma(double currentR, double previousR, double currentDeltaError, double previousDeltaError)
-    {
-        double deltaDiff = std::abs(currentDeltaError - previousDeltaError);
-        if (deltaDiff <= 0)
-        {
-            cout<<"Reached Convergence";
-            return 0;
-        }
-        else
-        {
-            return std::abs(currentR - previousR) * deltaDiff / (deltaDiff * deltaDiff);
-        }
-    }
-    
-    double FixedRateFixedInstUnknownRate(double PV, double PMT, int n, double errorPercentage, double r0, double gamma0, int maxIterations)
-    {
-        int iterationsCount = 1;
-        
-        double previousR = r0;
-        double currentR = previousR;
-        double previousDeltaError = ErrorFunctionDerived(PMT, PV, currentR, n);
-        double currentDeltaError = previousDeltaError;
-        
-        double error = ErrorFunction(PMT, PV, currentR, n);
-        
-        while (error > errorPercentage / 100.0 && iterationsCount < maxIterations)
-        {
-            cout<<"Iteration " << to_string(iterationsCount) << " - Error: " << to_string(error) << "\n";
-            
-            double gamma = gamma0;
-            
-            if (iterationsCount > 1)
-            {
-                gamma = Gamma(currentR, previousR, currentDeltaError, previousDeltaError);
-            }
-            
-            previousR = currentR;
-            previousDeltaError = currentDeltaError;
-            currentR = previousR - gamma * previousDeltaError;
-            currentDeltaError = ErrorFunctionDerived(PMT, PV, currentR, n);
-            
-            error = ErrorFunction(PMT, PV, currentR, n);
-            iterationsCount++;
-        }
-        
-        return currentR;
-    }
-    
-    double InitialRate(double PV, double PMT, int n)
-    {
-        if (n > 1 && PV > 0)
-        {
-            return (n * PMT - PV)/((n - 1) * PV);
-        }
-        else
-        {
-            return 0;
-        }
-    }
-    
-    bool CheckValues(double PV, double PMT, int n)
-    {
-        if (n < 1)
-        {
-            cout<<"The number of periods must be >= 1 !!";
-            return false;
-        }
-        
-        if (PV <= 0 || PMT <= 0)
-        {
-            cout<<"The instalment and the loan nominal must be > 0 !!";
-            return false;
-        }
-        
-        if (n * PMT < PV)
-        {
-            cout<<"The total money reinbursed sould be greater than the inital loan !!";
-            return false;
-        }
-        
-        return true;
-    }
-};
+return	n*log(1+r0)+ log(PMTi-PVi*r0)-log(PMTi);
+
+}
+
+
+double  derivfunc(double r0, double PVi,double PMTi,int n)
+{
+return  (n/(1+r0))+ (-(PVi)/(PMTi-PVi*r0));
+}
+
+
+
+double newtonRaphson(double r0, double PVi, double PMT, int n)
+{
+      double  h = func(double r0, double PVi, double PMT, int n) / derivFunc(double r0, double PVi, double PMT, int n);
+ while (abs(h) >= epsilon)
+ {
+     h = func(double r0, double PVi, double PMTi, int n)/derivFunc(double r0, double PVi, double PMTi, int n);
+
+     r0 = r0- h;
+ }
+	
+}
 
 
 int main()
+
+
+
 {
-    Functions calculator;
-    
-    cout<<"Please enter a loan nominal value: ";
-    double PV;// = 2309.75;
-    cin >> PV;
-    cout<<"Please enter an instalement value: ";
-    double PMT;// = 2309.75;
-    cin >> PMT;
-    cout<<"Please enter a number of periods: ";
-    int n;// = 5;
-    cin >> n;
-    
-    if (calculator.CheckValues(PV, PMT, n))
-    {
-        if (n == 1)
-        {
-            double r = (PMT / PV) - 1;
-            cout<<"The rate of the loan is:\n";
-            cout<<to_string(r);
-        }
-        else
-        {
-            double errorPercentage = 1;
-            double gamma0 = 0.001;
-            double r0 = calculator.InitialRate(PV, PMT, n);
-            int maxIterations = 100;
-            
-            double r = calculator.FixedRateFixedInstUnknownRate(PV, PMT, n, errorPercentage, r0, gamma0, maxIterations);
-            cout<<"The rate of the loan is:\n";
-            cout<<to_string(r);
-        }
-    }
+
+
+    srand (( unsigned ) time (0));
+
+
+	int n;
+
+
+
+    double  PVi,PMTi,r1,freq,monthi,yeari;
+
+
+
+cout<<"Input the present value: ";
+cin>>PVi;cout<<endl;
+
+cout<<"Input the Installment value: ";
+cin>>PMTi;cout<<endl;
+
+cout<<"Input frequency (1=annually, 2=semi-anually,4=quarterly,12=monthly): ";
+cin>>freq;cout<<endl;
+
+
+cout<<"Input number of Periods: ";
+cin>>n;cout<<endl;
+
+cout<<"Input your starting month: ";
+cin>>monthi;cout<<endl;
+
+
+cout<<"Input your starting year: ";
+cin>>yeari;cout<<endl;
+
+double r0=0.0001;
+r1= newtonRaphson(r0);
+
+double  PV[n+1], closingbal[n], interest[n], principal[n], r, periodic, per_year[n], per_month[n];
+
+
+r= (r1*freq)*100;
+
+periodic= (r1*100);
+
+
+PV[1]=PVi;
+
+
+
+per_month[1]=monthi;
+
+
+per_year[1]=yeari;
+
+
+
+
+	for (int i=1;i<=n;i++)
+
+  {
+
+
+  interest[i]=(periodic/100)*PV[i];
+
+  principal[i]= PMTi-interest[i];
+
+
+  closingbal[i]=PV[i]-principal[i];
+
+
+	PV[i+1]=closingbal[i];
+
+
+	per_year[i+1]=per_year[i];
+
+
+	per_month[i+1]=per_month[i]+(12/freq);
+
+
+
+	if (per_month[i+1]>12)
+
+
+	{
+
+
+
+
+
+                per_month[i+1]=per_month[i+1]-12;
+
+
+
+		per_year[i+1]=per_year[i+1]+1;
+
+
+
+
+
+	}
+
+
+
+
+
+
+
+}
+
+
+
+
+  ofstream myfile3;
+
+
+  myfile3.open ("newtonraphson.csv");
+
+
+
+  myfile3 << "Period#, Date, Opening Balance, Principal, Periodic Interest Rate, Interest, Installment, Closing Balance \n";
+
+
+
+  for (int i=1; i<=n;i++)
+
+
+
+
+  {
+
+
+
+
+
+  myfile3<<i<<","<<per_month[i]<<"/"<<per_year[i]<<","<<PV[i]<<","<<principal[i]<<","<<periodic<<"%"<<","<<interest[i]<<","<<PMTi<<","<<closingbal[i]<<endl;
+
+
+
+
+
+  }
+
+
+
+
+
+
+
+  myfile3.close();
+
+
+
+
+
+
+
+}
+
+
+
 }
