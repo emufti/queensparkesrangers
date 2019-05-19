@@ -1,101 +1,140 @@
-
 #include <iostream>
-#include "math.h"
+
+#include <fstream>
+
+#include <ctime>
+
+#include <cstring>
+
+#include <cmath>
+
+#include <cstdlib>
+
+
 
 using namespace std;
 
-class Functions
-{
-    public:
-    
-    
-    double FixedRateFixedInstUnknownPV(double r, double PMT, int n)
-    {
-        double PV = 0;
-        
-        if (n < 1)
-        {
-            cout<<"The number of periods must be >= 1 !!";
-            return -1;
-        }
-        if (PMT <= 0)
-        {
-            cout<<"The instalment must be > 0 !!";
-            return -1;
-        }
-        if (r <= -1)
-        {
-            cout<<"The interest rate must be > -1 !!";
-            return -1;
-        }
-        
-        
-        if (n==1)
-        {
-            PV = PMT / (1 + r);
-            return PV;
-        }
-        else
-        {
-            double nom = 0;
-            double denom = 0;
-            double r1 = r + 1;
-            double rexponent = 1;
-            
-            for (int i = 1; i < n; i++)
-            {
-                nom += (n - i) * rexponent;
-                denom += rexponent;
-                rexponent *= r1;
-            }
-            denom += rexponent;
-            
-            nom = n + (r * nom);
-            denom = 1 + (r * denom);
-            
-            if (denom > 0)
-            {
-                PV = (nom / denom) * PMT;
-                return PV;
-            }
-            else
-            {
-                cout<<"Bad Calculation !!";
-                return -1;
-            }
-            
-        }
-    }
-};
 
 
 int main()
-{
-    Functions calculator;
 
-        cout<<"Please enter a rate: ";
-        double r;// = 0.05;
-        cin >> r;
-        cout<<"Please enter an instalement value: ";
-        double PMT;// = 2309.75;
-        cin >> PMT;
-        cout<<"Please enter a number of periods: ";
-        int n;// = 5;
-        cin >> n;
-        
-        double PV = calculator.FixedRateFixedInstUnknownPV(r, PMT, n);
-        
-        if (PV != -1)
-        {
-            cout<<"The initial nominal of the loan is:\n";
-            cout<<to_string(PV);
-        }
-        else
-        {
-            cout<<"Please retry";
-        }
-    }
+{
+
+    srand (( unsigned ) time (0)); 
+
+    double  PMTi,r,freq,monthi,yeari;
+
+    int n;
+
     
+
+
+
+cout<<" Input the Interest rate: ";
+
+cin>>r;cout<<endl;
+
+cout<<"Input the Installment: ";
+
+cin>> PMTi; cout<<endl;
+
+cout<<"Input frequency (1=annually, 2=semi-anually,4=quarterly,12=monthly): ";
+
+cin>>freq;cout<<endl;
+
+cout<<"Input number of Periods: ";
+
+cin>>n;cout<<endl; 
+
+cout<<"Input your starting month: ";
+
+cin>>monthi;cout<<endl;
+
+cout<<"Input your starting year: ";
+
+cin>>yeari;cout<<endl;
+
+	
+
+	double PMT[n] , PV[n+1],  closingbal[n], interest[n], principal[n], periodic, per_year[n], per_month[n];
+
+PMT[1]= PMTi;	
+periodic= (r/freq);
+
+
+PV[1]= (PMTi)/((periodic/100)+ (periodic/100)/((pow((1+periodic/100),n)-1)));
+
+
+
+
+per_month[1]=monthi;
+
+per_year[1]=yeari;
+
+
+
+
+
+	for (int i=1;i<=n;i++)
+
+  {
+
+  
+  interest[i]=(periodic/100)*PV[i];
+
+  principal[i]= PMTi-interest[i];
+
+  closingbal[i]=PV[i]-principal[i];
+
+	PV[i+1]=closingbal[i];
+
+	
+
+	per_year[i+1]=per_year[i];
+
+	per_month[i+1]=per_month[i]+(12/freq);
+
+	
+
+	if (per_month[i+1]>12)
+
+	{
+
+		per_month[i+1]=per_month[i+1]-12;
+
+		per_year[i+1]=per_year[i+1]+1;
+
+	}
+
+}
+
+
+
+
+
+  ofstream myfile3;
+
+  myfile3.open ("case4.csv");
+
+  myfile3 << "Period#, Date, Opening Balance, Principal, Periodic Interest Rate, Interest, Installment, Closing Balance \n";
+
+  
+
+  for (int i=1; i<=n;i++)
+
+  {
+
+  
+
+  	myfile3<<i<<","<<per_month[i]<<"/"<<per_year[i]<<","<<PV[i]<<","<<principal[i]<<","<<periodic<<"%"<<","<<interest[i]<<","<<PMTi<<","<<closingbal[i]<<endl;
+
+  	
+
+  }
+
+  myfile3.close();
+
+}
     
     
 
